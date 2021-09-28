@@ -140,4 +140,5 @@ def delete(sno):
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first()
     return render_template('post.html', parameters=parameters,post=post)
-app.run(host = "10.100.100.10", port = 9566)
+if __name__ == '__main__':
+    app.run()
