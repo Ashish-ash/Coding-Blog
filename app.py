@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_mail import Mail
 import json
 import math
-with open('config.json','r') as c:
+with open('composer.json','r') as c:
     parameters = json.load(c)["parameters"]
 
 app = Flask(__name__)
