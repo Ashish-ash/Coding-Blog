@@ -3,7 +3,6 @@
   {
     "local_server" : "True" ,
     "local_uri" : "mysql+pymysql://root:@localhost/ashish_9810",
-    "prod_uri": "postgres://lelioozrwphzjr:63e0e4871c2f0965bb8460388c7574dc577780e694688a2f0030539889a4c49b@ec2-18-233-32-61.compute-1.amazonaws.com:5432/d68vbr8eiofq9v",
     "UserName" : "ak9810125073@gmail.com",
     "Gmail-Password" : "mahajan600",
     "no_of_posts": 2,
