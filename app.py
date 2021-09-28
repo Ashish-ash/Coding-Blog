@@ -27,6 +27,13 @@ class Contacts(db.Model):
     phone_num = db.Column(db.String(12), nullable=False)
     mes = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), nullable=False)
+    
+    def __init__(self, name, phone_num, mes, email, date):
+        self.name = name
+        self.phone_num = phone_num
+        self.msg = msg
+        self.date = date
+        self.email = email
 
 class Posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
@@ -35,6 +42,13 @@ class Posts(db.Model):
     tagline = db.Column(db.String(120), nullable=False)
     slug = db.Column(db.String(21), nullable=False)
     date = db.Column(db.String(12), nullable=True)
+    
+    def __init__(self, title, slug, content, date, tagline):
+        self.title = title
+        self.slug = slug
+        self.content = content
+        self.date = date
+        self.tagline = tagline
 
 
 @app.route("/")
