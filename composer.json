@@ -1,0 +1,13 @@
+{
+  "parameters":
+  {
+    "local_server" : "True" ,
+    "local_uri" : "mysql+pymysql://root:@localhost/ashish_9810",
+    "UserName" : "ak9810125073@gmail.com",
+    "Gmail-Password" : "mahajan600",
+    "no_of_posts": 2,
+    "login_image":"th.jpg",
+    "admin_user":"Ashish",
+    "admin_password": "Ashish@2002"
+  }
+}
