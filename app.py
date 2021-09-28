@@ -6,7 +6,7 @@ import json
 import math
 from werkzeug.utils import secure_filename
 import os
-with open('composer.json', 'r') as c:
+with open('config.json', 'r') as c:
     parameters = json.load(c)["parameters"]
 
 app = Flask(__name__)
