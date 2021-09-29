@@ -46,9 +46,9 @@ class Posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(120), nullable=False)
-    tagline = db.Column(db.String(120), nullable=False)
     slug = db.Column(db.String(21), nullable=False)
     date = db.Column(db.String(12), nullable=True)
+    tagline = db.Column(db.String(120), nullable=False)
 
     def __init__(self, title, slug, content, date, tagline):
         self.title = title
