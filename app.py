@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 with open('config.json', 'r') as c:
     parameters = json.load(c)["parameters"]
-local_server =False
+local_server=False
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
 app.config.update(
@@ -24,7 +24,7 @@ if(local_server):
 db = SQLAlchemy(app)
 
 
-class contacts(db.Model):
+class Contacts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     date = db.Column(db.String(12), nullable=True)
@@ -40,7 +40,7 @@ class contacts(db.Model):
         self.email = email
 
 
-class posts(db.Model):
+class Posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(120), nullable=False)
@@ -54,17 +54,24 @@ class posts(db.Model):
         self.Content = content
         self.Date = date
         self.tagline = tagline
+'''
+def updatesno(sno):
+    eng = create_engine(params['local_uri'])
+    with eng.connect() as con:
+        rs = con.execute(f"UPDATE posts SET sno=sno-1 WHERE sno > {sno}")
+    return "updated"
+'''
 
 
 @app.route("/")
 def home():
-    post = posts.query.filter_by().all()
-    last = math.ceil(len(post) / int(parameters['no_of_posts']))
+    posts = Posts.query.filter_by().all()
+    last = math.ceil(len(posts) / int(parameters['no_of_posts']))
     page = request.args.get('page')
     if (not str(page).isnumeric()):
         page = 1
     page = int(page)
-    post = post[(page - 1) * int(parameters['no_of_posts']):(page - 1) * int(parameters['no_of_posts']) + int(
+    posts = posts[(page - 1) * int(parameters['no_of_posts']):(page - 1) * int(parameters['no_of_posts']) + int(
         parameters['no_of_posts'])]
     if page == 1:
         prev = "#"
@@ -76,7 +83,7 @@ def home():
         prev = "/?page=" + str(page - 1)
         next = "/?page=" + str(page + 1)
 
-    return render_template('index.html', parameters=parameters, post=post, prev=prev, next=next)
+    return render_template('index.html', parameters=parameters, posts=posts, prev=prev, next=next)
 
 
 @app.route("/about")
@@ -87,16 +94,16 @@ def about():
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     if "user" in session and session['user'] == parameters['admin_user']:
-        post = posts.query.all()
-        return render_template("dashboard.html", parameters=parameters, post=post)
+        posts = Posts.query.all()
+        return render_template("dashboard.html", parameters=parameters, posts=posts)
     if request.method == "POST":
         username = request.form.get("uname")
         userpass = request.form.get("pass")
         if username == parameters['admin_user'] and userpass == parameters['admin_password']:
             # set the session variable
             session['user'] = username
-            post = posts.query.all()
-            return render_template("dashboard.html", parameters=parameters, post=post)
+            posts = Posts.query.all()
+            return render_template("dashboard.html", parameters=parameters, posts=posts)
     return render_template('login.html', parameters=parameters)
 
 
@@ -107,7 +114,7 @@ def contact():
         email1 = request.form.get('email')
         phone_no1 = request.form.get('phone_no')
         mes1 = request.form.get('mes')
-        entry = contacts(name=name1, date=datetime.now(), phone_num=phone_no1, mes=mes1, email=email1)
+        entry = Contacts(name=name1, date=datetime.now(), phone_num=phone_no1, mes=mes1, email=email1)
         db.session.add(entry)
         db.session.commit()
         mail.send_message('New message from ' + name1,
@@ -128,11 +135,11 @@ def edit(sno):
             content = request.form.get('content')
             date = datetime.now()
             if sno == '0':
-                post = posts(title=box_title, slug=slug, content=content, tagline=tline, date=date)
+                post = Posts(title=box_title, slug=slug, content=content, tagline=tline, date=date)
                 db.session.add(post)
                 db.session.commit()
             else:
-                post = posts.query.filter_by(sno=sno).first()
+                post = Posts.query.filter_by(sno=sno).first()
                 post.title = box_title
                 post.tagline = tline
                 post.slug = slug
@@ -140,7 +147,7 @@ def edit(sno):
                 post.date = date
                 db.session.commit()
                 return redirect('/edit/' + sno)
-    post = posts.query.filter_by(sno=sno).first()
+    post = Posts.query.filter_by(sno=sno).first()
     return render_template('edit.html', parameters=parameters, post=post, sno=sno)
 
 
@@ -153,7 +160,7 @@ def logout():
 @app.route("/delete/<string:sno>", methods=['GET', 'POST'])
 def delete(sno):
     if "user" in session and session['user'] == parameters['admin_user']:
-        post = posts.query.filter_by(sno=sno).first()
+        post = Posts.query.filter_by(sno=sno).first()
         db.session.delete(post)
         db.session.commit()
     return redirect("/dashboard")
@@ -161,9 +168,9 @@ def delete(sno):
 
 @app.route("/post/<string:post_slug>", methods=['GET'])
 def post_route(post_slug):
-    post = posts.query.filter_by(slug=post_slug).first()
+    post = Posts.query.filter_by(slug=post_slug).first()
     return render_template('post.html', parameters=parameters, post=post)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug = True)
