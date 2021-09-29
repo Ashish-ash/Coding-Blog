@@ -25,6 +25,7 @@ db = SQLAlchemy(app)
 
 
 class Contacts(db.Model):
+    __tablename__ = 'contacts'
     sno = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     date = db.Column(db.String(12), nullable=True)
@@ -41,6 +42,7 @@ class Contacts(db.Model):
 
 
 class Posts(db.Model):
+    __tablename__ = 'posts'
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(120), nullable=False)
