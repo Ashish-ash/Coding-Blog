@@ -24,7 +24,7 @@ if(local_server):
 db = SQLAlchemy(app)
 
 
-class Contacts(db.Model):
+class contacts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     date = db.Column(db.String(12), nullable=True)
@@ -40,7 +40,7 @@ class Contacts(db.Model):
         self.email = email
 
 
-class Posts(db.Model):
+class posts(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String(120), nullable=False)
