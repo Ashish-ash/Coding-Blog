@@ -52,9 +52,9 @@ class Posts(db.Model):
 
     def __init__(self, title, slug, content, date, tagline):
         self.title = title
-        self.Content = content
-        self.Slug = slug
-        self.Date = date
+        self.content = content
+        self.slug = slug
+        self.date = date
         self.tagline = tagline
 '''
 def updatesno(sno):
