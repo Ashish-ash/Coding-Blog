@@ -52,8 +52,8 @@ class Posts(db.Model):
 
     def __init__(self, title, slug, content, date, tagline):
         self.title = title
-        self.Slug = slug
         self.Content = content
+        self.Slug = slug
         self.Date = date
         self.tagline = tagline
 '''
