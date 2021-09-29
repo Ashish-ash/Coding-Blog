@@ -65,13 +65,13 @@ def updatesno(sno):
 
 @app.route("/")
 def home():
-    posts = Posts.query.filter_by().all()
-    last = math.ceil(len(posts) / int(parameters['no_of_posts']))
+    post = posts.query.filter_by().all()
+    last = math.ceil(len(post) / int(parameters['no_of_posts']))
     page = request.args.get('page')
     if (not str(page).isnumeric()):
         page = 1
     page = int(page)
-    posts = posts[(page - 1) * int(parameters['no_of_posts']):(page - 1) * int(parameters['no_of_posts']) + int(
+    post = post[(page - 1) * int(parameters['no_of_posts']):(page - 1) * int(parameters['no_of_posts']) + int(
         parameters['no_of_posts'])]
     if page == 1:
         prev = "#"
@@ -83,7 +83,7 @@ def home():
         prev = "/?page=" + str(page - 1)
         next = "/?page=" + str(page + 1)
 
-    return render_template('index.html', parameters=parameters, posts=posts, prev=prev, next=next)
+    return render_template('index.html', parameters=parameters, post=post, prev=prev, next=next)
 
 
 @app.route("/about")
@@ -94,16 +94,16 @@ def about():
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     if "user" in session and session['user'] == parameters['admin_user']:
-        posts = Posts.query.all()
-        return render_template("dashboard.html", parameters=parameters, posts=posts)
+        post = posts.query.all()
+        return render_template("dashboard.html", parameters=parameters, post=post)
     if request.method == "POST":
         username = request.form.get("uname")
         userpass = request.form.get("pass")
         if username == parameters['admin_user'] and userpass == parameters['admin_password']:
             # set the session variable
             session['user'] = username
-            posts = Posts.query.all()
-            return render_template("dashboard.html", parameters=parameters, posts=posts)
+            post = posts.query.all()
+            return render_template("dashboard.html", parameters=parameters, post=post)
     return render_template('login.html', parameters=parameters)
 
 
@@ -114,7 +114,7 @@ def contact():
         email1 = request.form.get('email')
         phone_no1 = request.form.get('phone_no')
         mes1 = request.form.get('mes')
-        entry = Contacts(name=name1, date=datetime.now(), phone_num=phone_no1, mes=mes1, email=email1)
+        entry = contacts(name=name1, date=datetime.now(), phone_num=phone_no1, mes=mes1, email=email1)
         db.session.add(entry)
         db.session.commit()
         mail.send_message('New message from ' + name1,
@@ -135,11 +135,11 @@ def edit(sno):
             content = request.form.get('content')
             date = datetime.now()
             if sno == '0':
-                post = Posts(title=box_title, slug=slug, content=content, tagline=tline, date=date)
+                post = posts(title=box_title, slug=slug, content=content, tagline=tline, date=date)
                 db.session.add(post)
                 db.session.commit()
             else:
-                post = Posts.query.filter_by(sno=sno).first()
+                post = posts.query.filter_by(sno=sno).first()
                 post.title = box_title
                 post.tagline = tline
                 post.slug = slug
@@ -147,7 +147,7 @@ def edit(sno):
                 post.date = date
                 db.session.commit()
                 return redirect('/edit/' + sno)
-    post = Posts.query.filter_by(sno=sno).first()
+    post = posts.query.filter_by(sno=sno).first()
     return render_template('edit.html', parameters=parameters, post=post, sno=sno)
 
 
@@ -160,7 +160,7 @@ def logout():
 @app.route("/delete/<string:sno>", methods=['GET', 'POST'])
 def delete(sno):
     if "user" in session and session['user'] == parameters['admin_user']:
-        post = Posts.query.filter_by(sno=sno).first()
+        post = posts.query.filter_by(sno=sno).first()
         db.session.delete(post)
         db.session.commit()
     return redirect("/dashboard")
@@ -168,7 +168,7 @@ def delete(sno):
 
 @app.route("/post/<string:post_slug>", methods=['GET'])
 def post_route(post_slug):
-    post = Posts.query.filter_by(slug=post_slug).first()
+    post = posts.query.filter_by(slug=post_slug).first()
     return render_template('post.html', parameters=parameters, post=post)
 
 
