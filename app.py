@@ -54,13 +54,6 @@ class posts(db.Model):
         self.content = content
         self.date = date
         self.tagline = tagline
-'''
-def updatesno(sno):
-    eng = create_engine(parameters['local_uri'])
-    with eng.connect() as con:
-        rs = con.execute(f"UPDATE posts SET sno=sno-1 WHERE sno > {sno}")
-    return "updated"
-'''
 
 
 @app.route("/")
