@@ -50,9 +50,9 @@ class posts(db.Model):
 
     def __init__(self, title, slug, content, date, tagline):
         self.title = title
-        self.slug = slug
-        self.content = content
-        self.date = date
+        self.Slug = slug
+        self.Content = content
+        self.Date = date
         self.tagline = tagline
 
 
