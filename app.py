@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 with open('config.json', 'r') as c:
     parameters = json.load(c)["parameters"]
-
+local_server =False
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
 app.config.update(
@@ -19,7 +19,8 @@ app.config.update(
     MAIL_PASSWORD=parameters['Gmail-Password']
 )
 mail = Mail(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = parameters['local_uri']
+if(local_server):
+    app.config['SQLALCHEMY_DATABASE_URI'] = parameters['local_uri']
 db = SQLAlchemy(app)
 
 
