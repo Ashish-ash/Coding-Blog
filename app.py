@@ -58,7 +58,7 @@ class Posts(db.Model):
         self.tagline = tagline
 '''
 def updatesno(sno):
-    eng = create_engine(params['local_uri'])
+    eng = create_engine(parameters['local_uri'])
     with eng.connect() as con:
         rs = con.execute(f"UPDATE posts SET sno=sno-1 WHERE sno > {sno}")
     return "updated"
